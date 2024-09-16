@@ -12,12 +12,10 @@ interface OrderProps {
 export const createOrder = async (order:any) => {
     try {
         
-            const stripe = new Stripe('sk_test_51PJ0rUSELHUO23ag6EAkQxPMXveBQj0mURv8yFUnyoJzF3WrNm6UAWeGRg8mU7IqcRBQSpGft03ttra9QJWmHbiG00RTLDrdtI')
-
-            
+         const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!)
+ 
         const price = 0 ? 0 : order.price * 100
-        console.log(price);
-            
+             
         const session = await stripe.checkout.sessions.create({
           line_items: [
             {

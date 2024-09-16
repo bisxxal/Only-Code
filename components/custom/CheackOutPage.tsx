@@ -46,7 +46,7 @@ function CheackOutPage({ user,  adminuser } : PostProps) {
       onClick={onCheakOut}
       role="link"
       size="lg"
-      className="rounded-full inshadow"
+      className="rounded-full bg-blue-600 w-full inshadow"
     >
       Subscribe
     </Button>

@@ -23,7 +23,8 @@ async function Visitpage({ params }: { params: { id: string } }) {
         <Posts posts={posts} user={alluser} adminuser={adminuser} />
       </div>
 
-      <div>
+      <div className=" w-[23%] border-[#ffffff39] border-[2px]  py-8 h-fit flex rounded px-4 flex-col mx-auto mt-20">
+        <h1 className=" text-zinc-400 font-medium text-xl mb-2">SUBSCRIPTION</h1>
         <CheackOutPage user={alluser} adminuser={adminuser} /> 
       </div>
     </main>

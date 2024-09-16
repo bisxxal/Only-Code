@@ -1,9 +1,7 @@
-'use client'
-import { updateUserProfile } from '@/actions/user.action';
+'use client' 
 import { Button } from '@/components/ui/button';
 import { CldUploadWidget, CloudinaryUploadWidgetInfo } from 'next-cloudinary';
-import React, { useState } from 'react'
-import toast from 'react-hot-toast';
+import React, { useState } from 'react' 
 
 function UserProfileUpload() {
     const [backgroundImage, setBackgoundImage] = useState<string>("");

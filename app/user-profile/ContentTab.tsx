@@ -12,8 +12,7 @@ import Image from 'next/image';
 import 'next-cloudinary/dist/cld-video-player.css';
 import { CldUploadWidget, CldVideoPlayer, CloudinaryUploadWidgetInfo } from 'next-cloudinary';
 import { createPostAction } from '@/actions/post.actions';
-import toast from 'react-hot-toast';
-import { allUsers } from '@/actions/user.action';
+import toast from 'react-hot-toast'; 
  function ContentTab() {
     const [text, setText] = useState("");
 	const [mediaType, setMediaType] = useState<"video" | "image">("video");

@@ -1,5 +1,4 @@
-'use client'
-import { User } from '@prisma/client'
+'use client' 
 import Image from 'next/image'
 import { useRouter } from 'next/navigation'; 
  

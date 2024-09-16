@@ -2,10 +2,9 @@
 import { getServerSession } from "next-auth";
 import { authOptions } from "./api/auth/[...nextauth]/route";
 import SideBar from "@/components/custom/SideBar"; 
-import { AdminUsers, allUsers } from "@/actions/user.action";
+import {  allUsers } from "@/actions/user.action";
 import SuggestedUser  from "@/components/custom/SuggestedUser";
-import HomePage from "@/components/custom/HomePage";
-import { postsAll } from "@/actions/post.actions";
+import HomePage from "@/components/custom/HomePage"; 
 // import { CldVideoPlayer } from 'next-cloudinary';
 // import 'next-cloudinary/dist/cld-video-player.css';
   

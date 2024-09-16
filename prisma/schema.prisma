@@ -1,0 +1,148 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime? @map("email_verified")
+  image         String?
+  isSubcribed   Boolean?  @default(false)
+  customerId    String?   @unique // stripe customer id
+  backgoundImage String?
+  description   String?
+  subscriptionPrice Int?
+
+  accounts Account[]
+  sessions Session[]
+
+  isSubscription Subscription[]
+  comments       Comment[]
+  likes          Like[]
+  orders         Order[] 
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  @@map("users")
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String  @map("user_id")
+  type              String
+  provider          String
+  providerAccountId String  @map("provider_account_id")
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@map("accounts")
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique @map("session_token")
+  userId       String   @map("user_id")
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("sessions")
+}
+
+model VerificationToken {
+  identifier String
+  token      String
+  expires    DateTime
+
+  @@unique([identifier, token])
+  @@map("verificationtokens")
+}
+
+// for application start here ----- 
+
+model Post {
+  id        String  @id @default(cuid())
+  mediaUrl  String?
+  mediaType String?
+  text      String?
+  userId    String
+  likes     Int     @default(0)
+  isPublic  Boolean @default(true)
+
+  comments Comment[]
+  likelist Like[]
+  
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Comment {
+  id     String @id @default(cuid())
+  userId String
+  text   String
+  postId String
+
+  post Post @relation(fields: [postId], references: [id])
+  user User @relation(fields: [userId], references: [id])
+
+  createdAt DateTime @default(now())
+
+  @@index([postId])
+  @@index([userId])
+}
+
+model Like {
+  id     String @id @default(cuid())
+  userId String
+  postId String
+
+  user User @relation(fields: [userId], references: [id])
+  post Post @relation(fields: [postId], references: [id])
+
+  @@index([postId])
+  @@index([userId])
+}
+
+model Subscription {
+  id                String   @id @default(cuid())
+  userId            String   @unique
+  productId         String?
+  price             Int
+  isPaid            Boolean  @default(false)
+  size              String?
+  orderDate         DateTime @default(now())
+  shippingAddressId String?
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+}
+
+model Order {
+  id        String   @id @default(cuid())
+  userId    String
+  planId    String
+  price     Int
+  status    String
+  paymentId String
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id])
+
+  @@index([userId])
+}

@@ -40,8 +40,8 @@ function CheackOutPage({ user,  adminuser } : PostProps) {
           console.error('Error during checkout:', error);
         }
       };
-    // console.log(adminuser?.id);
-    // console.log(user?.isSubscription);
+    console.log(adminuser?.id);
+    console.log(user?.isSubscription);
     
     
   return (

@@ -120,11 +120,11 @@ model Like {
 
 model Subscription {
   id                String   @id @default(cuid())
-  userId            String   @unique
-  stripeId         String?
+  userId            String   @unique 
+  stripeId          String?
   price             Int
   isPaid            Boolean  @default(false)
-  size              String?
+  buyerId           String?
   orderDate         DateTime @default(now())
   shippingAddressId String?
 

@@ -55,10 +55,10 @@ export const cheakOutOrder = async (orders:CheakOutProps) => {
             data:{
                 stripeId: orders.stripeId,
                 // sellerId: order.sellerId,
-                // buyerId: order.buyerId,
+                buyerId: orders.buyerId,
                 // totalAmount: order.totalAmount,
                 // createdAt: order.createdAt
-                userId: orders.buyerId,
+                userId: orders.sellerId,
                 price: Number(orders.totalAmount),
                 isPaid: true,
             }

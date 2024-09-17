@@ -131,7 +131,7 @@ export interface PostProps {
                     
                     <div className=' p-4 w-full inshadow border-[1px] rounded-lg border-[#ffffff3f] '>
                 <div className='  bg-blue-400 cursor-pointer hover:bg-[#0091ea]  transition-all justify-center text-medium items-center mt-3 rounded-full  text-blue-500 flex py-2'> 
-                <h1 className=' text-white'>SUBSCRIBE TO SEE USER'S POST</h1>
+                <h1 className=' text-white'>SUBSCRIBE TO SEE USER S POST</h1>
                     </div>
                 </div>
             </div>
@@ -168,7 +168,7 @@ export interface PostProps {
 
         { 
           post?.comments.length !== 0 ? post?.comments?.map((item:any) => ( 
-            <div className='px-4 flex my-3 '>
+            <div key={item?.id} className='px-4 flex my-3 '>
                 <Image onClick={()=>router.push(`${item?.user?.id}`)} src={item?.user?.image} width={550} height={525} className=' h-14 w-14 rounded-full'  alt='post'/>
                 <div className=' ml-4'>
                     <h1 className=' font-medium'>{item?.user?.name}</h1>

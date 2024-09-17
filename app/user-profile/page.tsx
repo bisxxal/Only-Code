@@ -1,12 +1,12 @@
 import SideBar from "@/components/custom/SideBar";
-import React from "react";
-import { authOptions } from "../api/auth/[...nextauth]/route";
+import React from "react"; 
 import { getServerSession } from "next-auth";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import AnalyticsTab from "./AnalyticsTab";
 import ContentTab from "./ContentTab";
 import { Metadata } from "next";
 import UserProfileUpload from "./UserProfileUpload";
+import { authOptions } from "@/lib/auth";
 
 export const metadata: Metadata = {
   title: "New Post ONLY Code",

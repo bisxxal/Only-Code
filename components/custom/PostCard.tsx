@@ -21,7 +21,7 @@ function PostCard({ post, isSubscribed, admin }: any) {
           </div>
 
             <p className=' mt-5'> {post[0]?.text} </p>
-            <p className=' mt-5'>Haiii ♥️ Glad you're here! Now come check out the good stuff!! 😘🍑 <br />
+            <p className=' mt-5'>Haiii Glad you re here! Now come check out the good stuff!!  <br />
             https://onlyfans.com/buscemi/c1 </p>
         </div>
 
@@ -49,7 +49,7 @@ function PostCard({ post, isSubscribed, admin }: any) {
                          
                          <div className=' p-4 w-full inshadow border-[1px] rounded-lg border-[#ffffff3f] '>
                         <div className='  bg-blue-400 cursor-pointer hover:bg-[#0091ea]  transition-all justify-center text-medium items-center mt-3 rounded-full  text-blue-500 flex py-2'> 
-                        <h1 className=' text-white'>SUBSCRIBE TO SEE USER'S POST</h1>
+                        <h1 className=' text-white'>SUBSCRIBE TO SEE USERS POST</h1>
                          </div>
                         </div>
                     </div>

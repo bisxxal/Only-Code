@@ -1,8 +1,8 @@
 import SideBar from '@/components/custom/SideBar'
 import React from 'react'
 import ContentTab from '../user-profile/ContentTab'
-import { getServerSession } from 'next-auth'
-import { authOptions } from '../api/auth/[...nextauth]/route'
+import { getServerSession } from 'next-auth' 
+import { authOptions } from '@/lib/auth'
 
 async function page() {
     const session = await getServerSession(authOptions)

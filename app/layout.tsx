@@ -1,10 +1,10 @@
 import type { Metadata } from "next";
 import { Poppins } from "next/font/google";
-import "./globals.css";
-import { authOptions } from "./api/auth/[...nextauth]/route";
+import "./globals.css"; 
 import { getServerSession } from "next-auth";
 import SignInButton from "@/components/custom/Signinbutton";
 import  { Toaster } from 'react-hot-toast';
+import { authOptions } from "@/lib/auth";
  
 const inter = Poppins({
   subsets: ["latin"],

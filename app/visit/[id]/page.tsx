@@ -1,10 +1,10 @@
 import { CoverImage, PaticularPost } from "@/actions/post.actions";
-import { AdminUsers, PaticularUsers } from "@/actions/user.action";
-import { authOptions } from "@/app/api/auth/[...nextauth]/route";
+import { AdminUsers, PaticularUsers } from "@/actions/user.action"; 
 import CheackOutPage from "@/components/custom/CheackOutPage";
 import Posts from "@/components/custom/Posts";
 import SideBar from "@/components/custom/SideBar";
 import VisitPageFront from "@/components/custom/VisitPageFront";
+import { authOptions } from "@/lib/auth";
 import { getServerSession } from "next-auth";
 import React from "react";
 

@@ -1,9 +1,9 @@
 import SideBar from "@/components/custom/SideBar";
-import React from "react";
-import { authOptions } from "../api/auth/[...nextauth]/route";
+import React from "react"; 
 import { getServerSession } from "next-auth"; 
 import UpdateUserPage from "@/components/custom/UpdateUserPage";
 import { AdminUsers } from "@/actions/user.action";
+import { authOptions } from "@/lib/auth";
 
 async function Updateepage() {
   const session = await getServerSession(authOptions);

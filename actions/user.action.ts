@@ -39,7 +39,14 @@ export const AdminUsers = async () => {
             where: {
                 email: session.user?.email ?? undefined 
             },
-           
+        //    include:{
+        //     isSubscription: {
+        //         include:{
+        //             user: true
+        //         }
+        //     }
+            
+        //    }
         }); 
 
         return admin;
@@ -54,7 +61,15 @@ export const PaticularUsers = async (id: string) => {
         const allUsers = await prisma.user.findUnique({
             where: {
                 id
-            }
+            },
+            include:{
+                isSubscription: {
+                    include:{
+                        user: true
+                    }
+                }
+                
+               }
         }); 
         return allUsers; 
     } catch (error) {

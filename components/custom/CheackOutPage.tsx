@@ -40,6 +40,9 @@ function CheackOutPage({ user,  adminuser } : PostProps) {
           console.error('Error during checkout:', error);
         }
       };
+    // console.log(adminuser?.id);
+    // console.log(user?.isSubscription);
+    
     
   return (
     <Button
@@ -48,6 +51,9 @@ function CheackOutPage({ user,  adminuser } : PostProps) {
       size="lg"
       className="rounded-full bg-blue-600 w-full inshadow"
     >
+      {/* {
+        user?.isSubscription && user.isSubscription?.userId === adminuser?.id ? 'Unsubscribe' : 'Subscribe'
+      } */}
       Subscribe
     </Button>
   )

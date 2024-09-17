@@ -18,21 +18,25 @@ export async function POST(request: Request) {
 
   // Get the ID and type
   const eventType = event.type
+  
+  console.log('checkout.session.completed');
 
   // CREATE
   if (eventType === 'checkout.session.completed') {
-    const { id, amount_total, metadata } = event.data.object
 
+
+    const { id, amount_total, metadata } = event.data.object
+    
     const orders = {
       stripeId: id,
       sellerId: metadata?.sellerId || '',
       buyerId: metadata?.buyerId || '',
       totalAmount: amount_total ? (amount_total / 100).toString() : '0',
-      createdAt: new Date(),
+      // createdAt: new Date(),
     }
 
     const newOrder = await cheakOutOrder(orders)
-    return NextResponse.json({ message: 'OK', order: newOrder })
+    return NextResponse.json({ message: 'OK',showingOrder:orders, order: newOrder })
   }
 
   return new Response('', { status: 200 })

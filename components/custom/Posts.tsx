@@ -29,12 +29,8 @@ export interface PostProps {
  function Posts({posts ,user ,adminuser }: PostProps) { 
   const router = useRouter()
   const isLoading = false
-  const [isLiked , setIsLiked] = useState(false)
-  const [loadingPostId, setLoadingPostId] = useState<string | null>(null);
-  const [localPosts, setLocalPosts] = useState(posts);
+  const [isLiked , setIsLiked] = useState(false) 
   const [showCommentBox, setShowCommentBox] = useState(false);
-
-  
   
     const delePost = async(id:string) => {
  

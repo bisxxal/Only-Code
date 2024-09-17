@@ -2,13 +2,6 @@
 import { prisma } from '@/lib/prisma';
 import Stripe from 'stripe' 
 
-interface OrderProps {
-    // price: number;
-    // userId: string;
-    // buyerId: string;
-    // name: string;
-    
-}
 export const createOrder = async (order:any) => {
     try {
         
@@ -53,19 +46,19 @@ interface CheakOutProps {
     sellerId: string;
     buyerId: string;
     totalAmount: string;
-    createdAt: Date;
+    // createdAt: Date;
 }
 export const cheakOutOrder = async (orders:CheakOutProps) => {
 
     try {
         const newOrder = await prisma.subscription.create({
             data:{
-                // stripeId: order.stripeId,
+                stripeId: orders.stripeId,
                 // sellerId: order.sellerId,
                 // buyerId: order.buyerId,
                 // totalAmount: order.totalAmount,
                 // createdAt: order.createdAt
-                userId: orders.sellerId,
+                userId: orders.buyerId,
                 price: Number(orders.totalAmount),
                 isPaid: true,
             }

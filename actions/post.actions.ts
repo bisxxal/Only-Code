@@ -102,6 +102,7 @@ export const PaticularPost = async ({ userId }: { userId: string }) => {
       where: {
         email: session?.user?.email || "",
       },
+      
 
       select: {
         id: true,
@@ -112,6 +113,9 @@ export const PaticularPost = async ({ userId }: { userId: string }) => {
       where: {
         userId: userId,
       },
+      orderBy:{
+        createdAt: 'desc'
+    },
       include: {
         comments: {
           include: {
@@ -126,6 +130,49 @@ export const PaticularPost = async ({ userId }: { userId: string }) => {
     return JSON.parse(JSON.stringify(post));
   } catch (error) {}
 };
+
+export const PaticularPostForMedia = async ({ userId }: { userId: string }) => {
+  try {
+    if (!userId) {
+      throw new Error("User ID is required");
+    }
+    const session = await getServerSession(authOptions);
+
+    const user = await prisma.user.findUnique({
+      where: {
+        email: session?.user?.email || "",
+      },
+
+      select: {
+        id: true,
+      },
+    });
+
+    const post = await prisma.post.findMany({
+      where: {
+        userId: userId,
+        mediaUrl: {
+          not: '',
+        },
+      },
+      orderBy:{
+        createdAt: 'desc'
+    },
+      include: {
+        comments: {
+          include: {
+            user: true,
+          },
+        },
+        likelist: { where: { userId: user?.id } },
+      },
+    });
+
+    // console.log(post);
+    return JSON.parse(JSON.stringify(post));
+  } catch (error) {}
+};
+
 
 export const setLike = async ({ postId }: { postId: string }) => {
   try {
@@ -306,11 +353,117 @@ export async function commentOnPostAction(postId: string, text: string) {
 
   } catch (error) {
     // Detailed error logging
-    console.error("Error commenting on the post:", {
-     
-      postId,
-      text,
-    });
+    console.error("Error commenting on the post:");
     throw new Error("Failed to comment on the post. Please try again later.");
   }
-}
+} 
+// export const postForPublicUser = async () => {
+//   try {
+//     const session = await getServerSession(authOptions);
+
+//     if (!session?.user?.email) {
+//       throw new Error("Unauthorized: No user email found.");
+//     }
+
+//     const user = await prisma.user.findUnique({
+//       where: {
+//         email: session.user.email,
+//       },
+//     });
+
+//     if (!user) {
+//       throw new Error("Unauthorized: User not found.");
+//     }
+
+//     const posts = await prisma.post.findMany({
+//       where: {
+//         isPublic: true,
+//         user: {
+//           isSubscription: {
+//             some: {
+//               buyerId: user.id, // Ensure there is a subscription for the logged-in user
+//             },
+//           },
+//         },
+//       },
+//       include: {
+//         comments: {
+//           include: {
+//             user: true, // Include the details of the users who commented
+//           },
+//         },
+//         likelist: true,
+//         user: {
+//           include: {
+//             isSubscription: true, // Include subscription details of the post's user
+//           },
+//         },
+//       },
+//     });
+
+//     return JSON.parse(JSON.stringify({ posts }));
+
+//   } catch (error) {
+//     console.log("Error while fetching public posts:", error);
+//     throw error;
+//   }
+// };
+
+export const postForPublicUser = async () => {
+  try {
+    const session = await getServerSession(authOptions);
+
+    if (!session?.user?.email) {
+      throw new Error("Unauthorized: No user email found.");
+    }
+
+    const user = await prisma.user.findUnique({
+      where: {
+        email: session.user.email,
+      },
+    });
+
+    if (!user) {
+      throw new Error("Unauthorized: User not found.");
+    }
+
+    const posts = await prisma.post.findMany({
+      where: {
+        OR: [
+          { isPublic: true }, // Condition 1: Post is public
+          {
+            user: {
+              isSubscription: {
+                some: {
+                  buyerId: user.id, // Condition 2: The user is subscribed
+                },
+              },
+            },
+          },
+        ],
+      },
+      orderBy:{
+        createdAt: 'desc'
+    },
+      include: {
+        comments: {
+          include: {
+            user: true, // Include details of users who commented
+          },
+        },
+        likelist: true,
+        user: {
+          include: {
+            isSubscription: true, // Include subscription details of the post's user
+          },
+        },
+      },
+    });
+
+    return JSON.parse(JSON.stringify({ posts }));
+
+  } catch (error) {
+    console.log("Error while fetching public posts:", error);
+    throw error;
+  }
+};

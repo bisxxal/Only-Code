@@ -39,14 +39,14 @@ export const AdminUsers = async () => {
             where: {
                 email: session.user?.email ?? undefined 
             },
-        //    include:{
-        //     isSubscription: {
-        //         include:{
-        //             user: true
-        //         }
-        //     }
+           include:{
+            isSubscription: {
+                include:{
+                    user: true
+                }
+            }
             
-        //    }
+           }
         }); 
 
         return admin;
@@ -62,6 +62,7 @@ export const PaticularUsers = async (id: string) => {
             where: {
                 id
             },
+            
             include:{
                 isSubscription: {
                     include:{

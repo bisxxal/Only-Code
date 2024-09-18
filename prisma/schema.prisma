@@ -26,6 +26,7 @@ model User {
   comments       Comment[]
   likes          Like[]
   orders         Order[] 
+  posts          Post[]
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -85,7 +86,7 @@ model Post {
 
   comments Comment[]
   likelist Like[]
-  
+   user User @relation(fields: [userId], references: [id])
 
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
@@ -128,7 +129,7 @@ model Subscription {
   orderDate         DateTime @default(now())
   shippingAddressId String?
 
-  user User @relation(fields: [userId], references: [id])
+  user User @relation(fields: [userId], references: [id]) 
 
   @@index([userId])
 }

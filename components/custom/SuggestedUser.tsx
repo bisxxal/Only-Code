@@ -38,9 +38,9 @@ function SuggestedUser({alluser}: SuggestedUserProps) {
         </div>
 
         <div className='pt-7 text-sm flex justify-between px-2 text-gray-400 border-t-[1.5] border-[#ffffff2b] '>
-            <h1>Privacy</h1>
-            <h1>Cookie Notice </h1>
-            <h1>Terms of service</h1>
+            <h1>Privacy   &#8226;</h1>
+            <h1>Cookie Notice &#8226;</h1>
+            <h1>Terms of service    &#8226;</h1>
         </div>
     </div>
   )

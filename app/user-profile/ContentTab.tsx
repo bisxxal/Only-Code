@@ -44,21 +44,19 @@ import toast from 'react-hot-toast';
       };
       
   return ( 
-    <>
-    <p className='text-3xl my-5 font-bold text-center uppercase'>
-            Share  Post
-    </p>
+    <div className=' w-full fram border h-screen border-[#ffffff23] '>
+     
 
-    <form
+    <form className=' w-full bg-red-5 '
         onSubmit={(e) => {
             e.preventDefault();
             createPost();
         }}
     >
-    <Card className='w-full max-w-md mx-auto frame bg-transparent text-white inshadow border-[2px]  border-[#ffffff23]'>
+    <Card className='w-full mx-auto fram bg-transparent text-white border-[2px border-none rounded-none border-[#ffffff23 '>
     <CardHeader>
-        <CardTitle className='text-2xl'>New Post</CardTitle>
-        <CardDescription>
+        <CardTitle className='text-2xl text-center '>New Post</CardTitle>
+        <CardDescription className=' text-center'>
             Share your exclusive content with your audience. Select only one video/image at a time.
         </CardDescription>
     </CardHeader>
@@ -68,7 +66,7 @@ import toast from 'react-hot-toast';
             <Label htmlFor='content'>Content</Label>
             <Textarea
                 id='content'
-                className=' inshadow'
+                className=' inshadow h-28'
                 placeholder="Share today's exclusive"
                 required
                 onChange={(e) => setText(e.target.value)}
@@ -152,7 +150,7 @@ import toast from 'react-hot-toast';
     </CardFooter>
     </Card>
     </form>
-</> 
+</div> 
   )
 }
 

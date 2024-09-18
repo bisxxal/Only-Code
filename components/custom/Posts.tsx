@@ -12,25 +12,42 @@ import { MdOutlineDelete } from "react-icons/md";
 import toast from 'react-hot-toast';
 import { useRouter } from 'next/navigation';
 import { FiSend } from "react-icons/fi";
- 
+import CheackOutPage from './CheackOutPage';
+import 'next-cloudinary/dist/cld-video-player.css';
 export interface PostProps {
 	posts?: any;
-	user: {
+	user?: {
     id: string;
     name: string | null; email: string | null; emailVerified: Date | null; image: string | null; subscriptionPrice?:number|null; isSubcribed: boolean | null; customerId: string | null; backgoundImage: string | null; description: string | null; createdAt: Date; updatedAt: Date; 
-    } | null | undefined;
+    isSubscription: any;
+} | null | undefined;
          
     adminuser?: {
     id: string;
     name: string | null; email: string | null; emailVerified: Date | null; image: string | null; subscriptionPrice?:number|null; isSubcribed: boolean | null; customerId: string | null; backgoundImage: string | null; description: string | null; createdAt: Date; updatedAt: Date;
-    } | null | undefined
- }
+    isSubscription: any;  } | null | undefined;
 
- function Posts({posts ,user ,adminuser }: PostProps) { 
+    content?: string;
+ }
+export function getPreviousDayFormatted(dateString: string): string { 
+    const date = new Date(dateString); 
+    const previousDay = new Date(date);
+    previousDay.setDate(date.getDate() - 1); 
+    const options: Intl.DateTimeFormatOptions = { 
+        month: 'short', 
+        day: '2-digit'
+    }; 
+    const formattedDate = previousDay.toLocaleDateString('en-US', options); 
+    const originalDateFormatted = date.toLocaleDateString('en-US', options); 
+    const isOneDayBefore = formattedDate === originalDateFormatted; 
+    return isOneDayBefore ? `${formattedDate} (1 day before)` : formattedDate;
+} 
+ function Posts({posts ,user ,adminuser , content }: PostProps) { 
   const router = useRouter()
   const isLoading = false
   const [isLiked , setIsLiked] = useState(false) 
   const [showCommentBox, setShowCommentBox] = useState(false);
+  
   
     const delePost = async(id:string) => {
  
@@ -56,7 +73,7 @@ export interface PostProps {
         e.preventDefault();
         const text = (e.target as HTMLFormElement).text.value;
 
-        console.log(text, postId);
+        // console.log(text, postId);
         try {
             await toast.promise(
                 commentOnPostAction(postId ,text, ),
@@ -74,9 +91,10 @@ export interface PostProps {
             toast.error('Failed to add comment. Please try again.');
         }
       }
+ 
   return (
     <div className=' w-full'>  
-  <div className=' w-full py-5 px-2 border-b-[2px] border-white flex justify-center ' > {  posts.length  === 0 ? 'No Posts':`Posts ${posts.length  }` } </div>
+  {/* <div className=' w-full py-5 px-2 border-b-[2px] border-white flex justify-center ' > {  posts.length  === 0 ? 'No Posts':`Posts ${posts.length  }` } </div> */}
  
 {
 	!isLoading && posts.length  !== 0 && posts?.map((post:any) =>  (
@@ -87,9 +105,17 @@ export interface PostProps {
                 <div className=' flex gap-2 items-center justify-center'>
                { user?.image && <Image src={user?.image} width={550} height={525} className=' h-14 w-14 rounded-full'  alt='post'/>}
                 <h1>{user?.name}</h1>  
+
+                { post?.user?.image && <Image src={post?.user?.image} width={550} height={525} className=' h-14 w-14 rounded-full'  alt='post'/>}
+                <h1>{post?.user?.name}</h1>  
                 </div>
 
-               <div className=' flex items-center gap-3'>  <h1>{post?.createdAt}</h1>
+                {/* <div className=' flex gap-2 items-center justify-center'>
+               { post?.user?.image && <Image src={post?.user?.image} width={550} height={525} className=' h-14 w-14 rounded-full'  alt='post'/>}
+                <h1>{post?.user?.name}</h1>  
+                </div> */}
+
+               <div className=' flex items-center gap-3'>  <h1>{getPreviousDayFormatted(post?.createdAt)}</h1>
                
                {
                post.userId === adminuser?.id &&  <div onClick={()=>delePost(post?.id)}  className=' p-2 rounded-full bg-[#ff000015]'>  <MdOutlineDelete className=' text-red-600 text-2xl' /> </div>
@@ -99,42 +125,90 @@ export interface PostProps {
           </div>
 
             <p className=' mt-5'> {post?.text} </p> 
-        </div>
+        </div> 
+        <div>
+            {
+                adminuser?.id === user?.id ? (
+                <>
+                    {
+                    content !== 'homepage' &&  post.mediaUrl && post.mediaType === 'image'  && (
+                            <div className=' w-full mt-2'>
+                                <Image src={post.mediaUrl} alt='post' width={950} height={925} className=' h-96 w-full object-cover' />
+                            </div>
+                        )
+                        }
 
+                        {
+                        content !== 'homepage' &&  post.mediaUrl && post.mediaType === 'video' && (
+                        <div className='w-full mx-auto'>
+                            <CldVideoPlayer width='960' height={540} className='rounded-md' src={post.mediaUrl} />
+                        </div>
+                        )
+                        }
+                
+                </>)
+             :(
+            <>
+             {
+            content !== 'homepage' &&  ( post.isPublic ||   user?.isSubscription?.some((i: any) => i?.buyerId === adminuser?.id ) && post.mediaUrl && post.mediaType === 'image' ) && (
+                <div className=' w-full mt-2'>
+                    <Image src={post.mediaUrl} alt='post' width={950} height={925} className=' h-96 w-full object-cover' />
+                </div>
+            )
+            }
 
-    {
-    (post.isPublic ||  user?.isSubcribed === true )&& post.mediaUrl && post.mediaType === 'image' && (
-        <div className=' w-full mt-2'>
-            <Image src={post.mediaUrl} alt='post' width={950} height={925} className=' h-96 w-full object-cover' />
-        </div>
-    )
-    }
-    {
-    (post.isPublic ||  user?.isSubcribed === true )&& post.mediaUrl && post.mediaType === 'video' && (
-    <div className='w-full mx-auto'>
-        <CldVideoPlayer width='960' height={540} className='rounded-md' src={post.mediaUrl} />
-    </div>
-    )
-    }
+            {
+            content !== 'homepage' &&  (post.isPublic ||   user?.isSubscription?.some((i: any) => i?.buyerId === adminuser?.id) )&& post.mediaUrl && post.mediaType === 'video' && (
+            <div className='w-full mx-auto'>
+                <CldVideoPlayer width='960' height={540} className='rounded-md' src={post.mediaUrl} />
+            </div>
+            )
+            }
 
-    {
-    !user?.isSubcribed && !post.isPublic && (
-        <div className=' w-full mt-2 bg-[#1a1b26] inshadow h-96'>
-            
-            <div className=' flex items-end pb-10 justify-center px-6 relative h-full'>
-
-            <IoMdLock  className=' text-7xl text-[#2f323b] absolute top-1/3'/>
+            {
+            content !== 'homepage' &&  !user?.isSubscription?.some((i: any) => i?.buyerId === adminuser?.id ) && !post.isPublic && (
+                <div className=' w-full mt-2 bg-[#1a1b26] inshadow h-96'>
                     
-                    <div className=' p-4 w-full inshadow border-[1px] rounded-lg border-[#ffffff3f] '>
-                <div className='  bg-blue-400 cursor-pointer hover:bg-[#0091ea]  transition-all justify-center text-medium items-center mt-3 rounded-full  text-blue-500 flex py-2'> 
-                <h1 className=' text-white'>SUBSCRIBE TO SEE USER S POST</h1>
+                    <div className=' flex items-end pb-10 justify-center px-6 relative h-full'>
+
+                    <IoMdLock  className=' text-7xl text-[#2f323b] absolute top-1/3'/>
+                            
+                            <div className=' p-4 w-full inshadow border-[1px] rounded-lg border-[#ffffff3f] '>
+                      
+                            <CheackOutPage user={user} adminuser={adminuser} content={'SUBSCRIBE TO SEE USER S POST'} />
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
-        )
-    }
+                )
+            }
+                    </>
+                )
+            }
 
+            {
+                content && content === 'homepage' && (
+                    <>
+
+                    {
+                    post.mediaUrl && post.mediaType === 'image'  && (
+                          <div className=' w-full mt-2'>
+                              <Image src={post.mediaUrl} alt='post' width={950} height={925} className=' h-96 w-full object-cover' />
+                          </div>
+                      )
+                      }
+          
+                      {
+                       post.mediaUrl && post.mediaType === 'video' && (
+                      <div className='w-full mx-auto'>
+                          <CldVideoPlayer width='960' height={540} className='rounded-md' src={post.mediaUrl} />
+                      </div>
+                      )
+                      }
+                          
+                    </>
+                )
+            }
+        </div> 
         <div color="white" className='text-white px-4  '>
             <div className=' flex gap-5 items-center my-2 text-2xl '>
            <SlLike
@@ -182,8 +256,6 @@ export interface PostProps {
 }
 
  {/* //////////// ------------------------------------ */}
-
-       
  
         {
             !isLoading && posts.length === 0   &&

@@ -93,7 +93,6 @@ function UpdateUserPage({alluser}:VisitPageFrontProps) {
             <label htmlFor="subscription">subscription</label>
             <input className=' rounded-xl bg-transparent inshadow py-2 px-3 placeholder:text-zinc-500' defaultValue={alluser?.subscriptionPrice ?? ""} type='number' placeholder='Add subscription Price' name="subscription"  />
             
-            {/* <input type="number" name="" id="" /> */}
             <label >Email</label>
             <h1 className=' cursor-not-allowed rounded-xl bg-transparent inshadow py-2 px-3 placeholder:text-zinc-500'>{alluser?.email}</h1>
        </div> 

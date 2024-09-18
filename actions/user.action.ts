@@ -6,11 +6,11 @@ import { getServerSession } from "next-auth";
 export const allUsers = async () => {
     try {
         const session = await getServerSession(authOptions);
-
+         
         if (!session) {
-            throw new Error("Unauthorized");
+            // throw new Error("Unauthorized");
+            return ;
         }
-
         const allUsers = await prisma.user.findMany({
             where: {
                 email: {
@@ -18,9 +18,7 @@ export const allUsers = async () => {
                 } 
             }
         });
-
         return JSON.parse(JSON.stringify(allUsers));
-
     } catch (error) {
         console.error("An error occurred while fetching all users:", error);
         
@@ -32,7 +30,8 @@ export const AdminUsers = async () => {
         const session = await getServerSession(authOptions);
 
         if (!session) {
-            throw new Error("Unauthorized");
+            // throw new Error("Unauthorized");
+            return ;
         }
         const admin = await prisma.user.findUnique({
             where: {
@@ -44,15 +43,11 @@ export const AdminUsers = async () => {
                     user: true
                 }
             }
-            
            }
         }); 
-
         return JSON.parse(JSON.stringify(admin));
-
     } catch (error) {
         console.log("An error occurred while fetching admin user:", error);
-        
     }
 }
 export const PaticularUsers = async (id: string) => {
@@ -89,7 +84,8 @@ export const updateUserProfile = async ({ backgroundImage ,name , image,descript
         const session = await getServerSession(authOptions);
 
         if (!session || !session.user?.email) {
-            throw new Error("Unauthorized or session user email not found");
+            // throw new Error("Unauthorized or session user email not found");
+            return ;
         }
  
         const updatedUser = await prisma.user.update({

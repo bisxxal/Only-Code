@@ -21,7 +21,8 @@ export const createPostAction = async ({
     const session = await getServerSession(authOptions);
 
     if (!session) {
-      throw new Error("Unauthorized");
+      // throw new Error("Unauthorized");
+      return JSON.parse(JSON.stringify({ success:false }))
     }
 
     const user = await prisma.user.findUnique({
@@ -31,7 +32,8 @@ export const createPostAction = async ({
     });
 
     if (!user) {
-      throw new Error("User not found");
+      // throw new Error("User not found");
+      return;
     }
 
     const newPost = await prisma.post.create({
@@ -100,7 +102,8 @@ export const CoverImage = async (userId: string): Promise<PostStats> => {
 export const PaticularPost = async ({ userId }: { userId: string }) => {
   try {
     if (!userId) {
-      throw new Error("User ID is required");
+      // throw new Error("User ID is required");
+      return ;
     }
     const session = await getServerSession(authOptions);
 
@@ -139,7 +142,8 @@ export const PaticularPost = async ({ userId }: { userId: string }) => {
 export const PaticularPostForMedia = async ({ userId }: { userId: string }) => {
   try {
     if (!userId) {
-      throw new Error("User ID is required");
+      // throw new Error("User ID is required");
+      return ;
     }
     const session = await getServerSession(authOptions);
 
@@ -187,7 +191,8 @@ export const setLike = async ({ postId }: { postId: string }) => {
     });
 
     if (!post) {
-      throw new Error("Post not found");
+      // throw new Error("Post not found");
+      return ;
     }
 
     const like = await prisma.like.findFirst({
@@ -218,7 +223,8 @@ export const postsAll = async () => {
     const session = await getServerSession(authOptions);
 
     if (!session) {
-      throw new Error("Unauthorized");
+      // throw new Error("Unauthorized");
+      return ;
     }
 
     const user = await prisma.user.findUnique({
@@ -228,7 +234,8 @@ export const postsAll = async () => {
     });
 
     if (!user) {
-      throw new Error("User not found");
+      // throw new Error("User not found");
+      return ;
     }
 
     const posts = await prisma.post.findMany({
@@ -267,7 +274,8 @@ export const deletePost = async ({ id }: { id: string }) => {
     });
 
     if (!post || !user) {
-      throw new Error("Post not found");
+      // throw new Error("Post not found");
+      return ;
     }
 
     await prisma.post.delete({
@@ -291,7 +299,8 @@ export async function likePostAction(postId: string) {
   });
 
   if (!user) {
-    throw new Error("Unauthorized");
+    // throw new Error("Unauthorized");
+    return JSON.parse(JSON.stringify({ success:false }))
   }
   const post = await prisma.post.findUnique({
     where: { id: postId },
@@ -327,7 +336,8 @@ export async function commentOnPostAction(postId: string, text: string) {
     const session = await getServerSession(authOptions);
 
     if (!session?.user?.email) {
-      throw new Error("Unauthorized: No user email found.");
+      // throw new Error("Unauthorized: No user email found.");
+      return JSON.parse(JSON.stringify({ success:false }))
     } 
     const user = await prisma.user.findUnique({
       where: {
@@ -354,7 +364,7 @@ export async function commentOnPostAction(postId: string, text: string) {
   } catch (error) {
     // Detailed error logging
     console.error("Error commenting on the post:");
-    throw new Error("Failed to comment on the post. Please try again later.");
+    // throw new Error("Failed to comment on the post. Please try again later.");
   }
 }  
 export const postForPublicUser = async () => {
@@ -362,7 +372,8 @@ export const postForPublicUser = async () => {
     const session = await getServerSession(authOptions);
 
     if (!session?.user?.email) {
-      throw new Error("Unauthorized: No user email found.");
+      // throw new Error("Unauthorized: No user email found.");
+      return JSON.parse(JSON.stringify({ success:false }))
     }
 
     const user = await prisma.user.findUnique({
@@ -372,7 +383,8 @@ export const postForPublicUser = async () => {
     });
 
     if (!user) {
-      throw new Error("Unauthorized: User not found.");
+      // throw new Error("Unauthorized: User not found.");
+      return;
     }
 
     const posts = await prisma.post.findMany({
@@ -412,6 +424,6 @@ export const postForPublicUser = async () => {
 
   } catch (error) {
     console.log("Error while fetching public posts:", error);
-    throw error;
+    // throw error;
   }
 };

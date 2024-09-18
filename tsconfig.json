@@ -19,7 +19,12 @@
     ],
     "paths": {
       "@/*": ["./*"]
-    }
+    },
+    
+      "target": "es2015",
+  
+      // other options
+   
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts"  ],
   "exclude": ["node_modules"]

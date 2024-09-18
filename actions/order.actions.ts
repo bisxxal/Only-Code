@@ -53,11 +53,8 @@ export const cheakOutOrder = async (orders:CheakOutProps) => {
     try {
         const newOrder = await prisma.subscription.create({
             data:{
-                stripeId: orders.stripeId,
-                // sellerId: order.sellerId,
-                buyerId: orders.buyerId,
-                // totalAmount: order.totalAmount,
-                // createdAt: order.createdAt
+                stripeId: orders.stripeId, 
+                buyerId: orders.buyerId, 
                 userId: orders.sellerId,
                 price: Number(orders.totalAmount),
                 isPaid: true,

@@ -27,10 +27,8 @@ export default async function RootLayout({
     <html lang="en">
       <body className={inter.className}>
       <Toaster />
-      {/* <QueryClientProvider client={queryClient}> */}
-       
-        {session ? <>{children}</> : <SignInButton />}
-    {/* </QueryClientProvider> */}
+     
+        {session ? <>{children}</> : <SignInButton />} 
       </body>
     </html>
   );

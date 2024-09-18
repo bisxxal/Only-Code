@@ -40,7 +40,7 @@ count?: any
       {/* coverImage */}
       <div className='relative w-full border-b-[10px] pb-5 border-[#242529] '>
         <div className=' h-[220px] relative inshadow frame '>
-          <div className=' backdrop-blur-lg px-5 py-1.5 text-black font-medium rounded-full absolute top-2 left-2 flex gap-3'> 
+          <div className=' backdrop-blur-[6px] px-5 py-1.5 text-black font-medium rounded-full absolute top-2 left-2 flex gap-3'> 
           <CiImageOn size={25}/>{count.imageCount} 
           <CiVideoOn size={25}/>{count?.videoCount}
           <FcLike size={25}/>{formatNumber(count?.totalLikes)}

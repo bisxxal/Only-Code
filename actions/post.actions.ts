@@ -60,12 +60,18 @@ export const CoverImage = async (userId: string): Promise<PostStats> => {
         where: {
           userId,
           mediaType: "image",
+          mediaUrl:{
+            not: ''
+          }
         },
       }),
       prisma.post.count({
         where: {
           userId,
           mediaType: "video",
+          mediaUrl:{
+            not: ''
+          }
         },
       }),
       prisma.post.findMany({
@@ -125,8 +131,7 @@ export const PaticularPost = async ({ userId }: { userId: string }) => {
         likelist: { where: { userId: user?.id } },
       },
     });
-
-    // console.log(post);
+ 
     return JSON.parse(JSON.stringify(post));
   } catch (error) {}
 };
@@ -167,8 +172,7 @@ export const PaticularPostForMedia = async ({ userId }: { userId: string }) => {
         likelist: { where: { userId: user?.id } },
       },
     });
-
-    // console.log(post);
+ 
     return JSON.parse(JSON.stringify(post));
   } catch (error) {}
 };
@@ -289,16 +293,12 @@ export async function likePostAction(postId: string) {
   if (!user) {
     throw new Error("Unauthorized");
   }
-
-  const userProfile = await prisma.user.findUnique({ where: { id: user.id } });
-  // if (!userProfile?.isSubscribed) return;
-
   const post = await prisma.post.findUnique({
     where: { id: postId },
     select: { likes: true, likelist: { where: { userId: user.id } } },
   });
 
-  if (!post) throw new Error("Post not found");
+  if (!post) { return JSON.parse(JSON.stringify({ success:false })) }       
 
   let newLikes: number;
   if (post.likelist.length > 0) {
@@ -336,7 +336,7 @@ export async function commentOnPostAction(postId: string, text: string) {
     });
 
     if (!user) {  
-      throw new Error("Unauthorized: User not found.");
+      return JSON.parse(JSON.stringify({ success:false }))
     }
 
     // Check if the post exists
@@ -356,59 +356,7 @@ export async function commentOnPostAction(postId: string, text: string) {
     console.error("Error commenting on the post:");
     throw new Error("Failed to comment on the post. Please try again later.");
   }
-} 
-// export const postForPublicUser = async () => {
-//   try {
-//     const session = await getServerSession(authOptions);
-
-//     if (!session?.user?.email) {
-//       throw new Error("Unauthorized: No user email found.");
-//     }
-
-//     const user = await prisma.user.findUnique({
-//       where: {
-//         email: session.user.email,
-//       },
-//     });
-
-//     if (!user) {
-//       throw new Error("Unauthorized: User not found.");
-//     }
-
-//     const posts = await prisma.post.findMany({
-//       where: {
-//         isPublic: true,
-//         user: {
-//           isSubscription: {
-//             some: {
-//               buyerId: user.id, // Ensure there is a subscription for the logged-in user
-//             },
-//           },
-//         },
-//       },
-//       include: {
-//         comments: {
-//           include: {
-//             user: true, // Include the details of the users who commented
-//           },
-//         },
-//         likelist: true,
-//         user: {
-//           include: {
-//             isSubscription: true, // Include subscription details of the post's user
-//           },
-//         },
-//       },
-//     });
-
-//     return JSON.parse(JSON.stringify({ posts }));
-
-//   } catch (error) {
-//     console.log("Error while fetching public posts:", error);
-//     throw error;
-//   }
-// };
-
+}  
 export const postForPublicUser = async () => {
   try {
     const session = await getServerSession(authOptions);

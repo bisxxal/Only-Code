@@ -28,6 +28,7 @@ export interface PostProps {
     isSubscription: any;  } | null | undefined;
 
     content?: string;
+    youSubscribed?: any;
  }
 export function getPreviousDayFormatted(dateString: string): string { 
     const date = new Date(dateString); 
@@ -93,8 +94,7 @@ export function getPreviousDayFormatted(dateString: string): string {
       }
  
   return (
-    <div className=' w-full'>  
-  {/* <div className=' w-full py-5 px-2 border-b-[2px] border-white flex justify-center ' > {  posts.length  === 0 ? 'No Posts':`Posts ${posts.length  }` } </div> */}
+    <div className=' w-full'>   
  
 {
 	!isLoading && posts.length  !== 0 && posts?.map((post:any) =>  (
@@ -109,11 +109,7 @@ export function getPreviousDayFormatted(dateString: string): string {
                 { post?.user?.image && <Image src={post?.user?.image} width={550} height={525} className=' h-14 w-14 rounded-full'  alt='post'/>}
                 <h1>{post?.user?.name}</h1>  
                 </div>
-
-                {/* <div className=' flex gap-2 items-center justify-center'>
-               { post?.user?.image && <Image src={post?.user?.image} width={550} height={525} className=' h-14 w-14 rounded-full'  alt='post'/>}
-                <h1>{post?.user?.name}</h1>  
-                </div> */}
+ 
 
                <div className=' flex items-center gap-3'>  <h1>{getPreviousDayFormatted(post?.createdAt)}</h1>
                

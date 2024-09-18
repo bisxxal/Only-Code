@@ -19,12 +19,11 @@ export const allUsers = async () => {
             }
         });
 
-        return allUsers;
+        return JSON.parse(JSON.stringify(allUsers));
 
     } catch (error) {
         console.error("An error occurred while fetching all users:", error);
-        // Optionally return a more specific result or throw again
-        throw new Error("Unable to fetch users");
+        
     }
 }
 
@@ -49,7 +48,7 @@ export const AdminUsers = async () => {
            }
         }); 
 
-        return admin;
+        return JSON.parse(JSON.stringify(admin));
 
     } catch (error) {
         console.log("An error occurred while fetching admin user:", error);
@@ -72,13 +71,11 @@ export const PaticularUsers = async (id: string) => {
                 
                }
         }); 
-        return allUsers; 
+        return JSON.parse(JSON.stringify(allUsers));
     } catch (error) {
         console.error("An error occurred while fetching particular user:", error); 
     }
-}
-// console.log(allUsers());
-
+} 
 interface UpdateUserProps {
     backgroundImage: string;
     name: string;
@@ -94,8 +91,7 @@ export const updateUserProfile = async ({ backgroundImage ,name , image,descript
         if (!session || !session.user?.email) {
             throw new Error("Unauthorized or session user email not found");
         }
-
-        // Update the user's profile with the new background image
+ 
         const updatedUser = await prisma.user.update({
             where: {
                 email: session.user.email
@@ -107,13 +103,68 @@ export const updateUserProfile = async ({ backgroundImage ,name , image,descript
                 description,
                 subscriptionPrice
             },
-        });
-
-        // Return the updated user information
-        return updatedUser;
+        }); 
+        return JSON.parse(JSON.stringify(updatedUser));
 
     } catch (error) {
-        console.error("An error occurred while updating the user profile:", error);
-        throw new Error("Unable to update user profile");
+        console.error("An error occurred while updating the user profile:", error); 
     }
 };
+
+export const userSubscription = async ({id}:{id:string|undefined}) => { 
+    try {
+        if (!id) {
+           return [];
+        }
+        const subscribed = await prisma.subscription.findMany({
+            where:{
+                buyerId: id,
+            },
+            include:{
+                user: true
+            }
+        });
+        return  JSON.parse(JSON.stringify( subscribed ));
+    } catch (error) {
+        
+    }
+}
+ 
+
+export const userWhoSubscribed = async ({ id }: { id: string | undefined }) => { 
+    try {
+        if (!id) {
+            return [];
+        }
+
+        const buyers = await prisma.subscription.findMany({
+            where: {
+                userId: id, 
+                buyerId: {
+                    not: null 
+                }
+            },
+            select: {
+                buyerId: true, 
+            }
+        });
+
+        // Get unique buyerIds from the results
+        const uniqueBuyerIds = [...new Set(buyers.map(sub => sub.buyerId))].filter(id => id !== null) as string[];
+
+        // Fetch users corresponding to the buyerIds
+       
+        const buyerUsers = await prisma.user.findMany({
+            where: {
+                id: {
+                    in: uniqueBuyerIds // Find users whose ids match the buyerIds
+                }
+            }
+        });
+
+        return JSON.parse(JSON.stringify(buyerUsers));
+    } catch (error) {
+        console.error("Error fetching buyers: ", error);
+     
+    }
+}

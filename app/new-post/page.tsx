@@ -1,6 +1,6 @@
 import SideBar from "@/components/custom/SideBar";
 import React from "react";
-import ContentTab from "../user-profile/ContentTab";
+import ContentTab from "../../components/custom/ContentTab";
 import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 
@@ -14,9 +14,7 @@ async function page() {
         <ContentTab />
       </div>
 
-      <div className=" max-lg:hidden  w-[25%]">
-        {/* <SuggestedUser alluser={alluser} /> */}
-      </div>
+      <div className=" max-lg:hidden  w-[25%]"></div>
     </main>
   );
 }

@@ -1,55 +1,4 @@
-// 'use client'
-// import { signOut } from "next-auth/react";
-// import Image from "next/image";
-// import Link from "next/link";
-// import React from "react";
-// import { GoHome } from "react-icons/go";
-// import { FaRegUser } from "react-icons/fa";
-// import { FaPlus } from "react-icons/fa6";
-// import { AdminUsers } from "@/actions/user.action";
-
-// const getAdmin = async () => { 
-//   const admin = await AdminUsers();
-//   // console.log(admin?.id);
-  
-//   return admin?.id;
-// } 
-// export type SideBarProps = {
-//   user: {
-//     name?: string | null | undefined;
-//     email?: string | null | undefined;
-//     image?: string | null | undefined;
-//   } | null | undefined;
-
-//   id?: () => Promise<{
-//     id: string;
-// } | null | undefined>
-
-// };
-// function SideBar({ user ,id }: SideBarProps) {
-
-//   console.log(getAdmin());
-//   // getAdmin();
-   
-//   return (
-//     <div className=" fixed max-xl:w-[100px]  w-[300px] h-screen border-r-[1.5px] border-[#ffffff27]  ">
-      
-//       <div className="mt-5 flex flex-col  mx-auto w-[65%] gap-4 ">
-//       { user?.image &&  <Image src={user?.image} height={300} width={300} alt="" className=" w-10 h-10 object-cover rounded-full"/>}
-//        <Link className="frame inshadow px-5 flex items-center gap-2 hover:bg-[#5a96c323] hover:text-blue-600 font-medium p-3 rounded-full" href="/"><GoHome className='text-xl'/> <h1 className=" block max-xl:hidden"> Home</h1> </Link>
-//        <Link className="frame inshadow px-5 flex items-center gap-2 hover:bg-[#5a96c323] hover:text-blue-600 font-medium p-3 w-full rounded-full"  href="/user-profile"> <FaRegUser className='text-xl'/> <h1 className=" block max-xl:hidden">profile</h1> </Link> 
-//        <Link className="frame inshadow px-5 flex items-center gap-2 hover:bg-[#5a96c323] hover:text-blue-600 font-medium p-3 w-full rounded-full"  href={`/visit/${getAdmin?.id}`}> <FaRegUser className='text-xl'/> <h1 className=" block max-xl:hidden">profile</h1> </Link> 
-//        <Link className=" inshadow px-5 flex gap-2 items-center mt-6 bg-[#00aff0] hover:bg-blue-500 py-2 rounded-full" href="/new-post"> <FaPlus className='text-xl' /> <h1 className=" block max-xl:hidden"> NEW POST </h1></Link>
-
-//        <button className="inshadow  bg-red-600 p-2 rounded-full" onClick={()=>signOut()}>Sign Out</button>
-//       </div> 
-//     </div>
-//   );
-// }
-
-// export default SideBar;
-
-
+ 
 'use client';
 
 import { useEffect, useState } from 'react';
@@ -89,15 +38,18 @@ function SideBar({ user }: SideBarProps) {
   return (
     <div className="fixed max-xl:w-[100px] w-[300px] h-screen border-r-[1.5px] border-[#ffffff27]">
       <div className="mt-5 flex flex-col mx-auto w-[65%] gap-4">
+
+        <Link  href={`/visit/${adminId}`}> 
         {user?.image && (
           <Image
-            src={user.image}
-            height={300}
-            width={300}
-            alt="User profile picture"
-            className="w-10 h-10 object-cover rounded-full"
+          src={user?.image}
+          height={300}
+          width={300}
+          alt="User profile picture"
+          className="w-10 h-10 object-cover rounded-full"
           />
         )}
+        </Link>
         <Link
           className="frame inshadow px-5 flex items-center gap-2 hover:bg-[#5a96c323] hover:text-blue-600 font-medium p-3 rounded-full"
           href="/"
@@ -107,10 +59,10 @@ function SideBar({ user }: SideBarProps) {
         </Link>
         <Link
           className="frame inshadow px-5 flex items-center gap-2 hover:bg-[#5a96c323] hover:text-blue-600 font-medium p-3 w-full rounded-full"
-          href="/user-profile"
+          href="/update-profile"
         >
           <FaRegUser className="text-xl" />
-          <h1 className="block max-xl:hidden">Profile</h1>
+          <h1 className="block max-xl:hidden">Update Profile</h1>
         </Link>
        
           <Link
@@ -120,6 +72,20 @@ function SideBar({ user }: SideBarProps) {
             <FaRegUser className="text-xl" />
             <h1 className="block max-xl:hidden">Admin Profile</h1>
           </Link>    
+          <Link
+            className="frame inshadow px-5 flex items-center gap-2 hover:bg-[#5a96c323] hover:text-blue-600 font-medium p-3 w-full rounded-full"
+            href={`/subscriptions`}
+          >
+            <FaRegUser className="text-xl" />
+            <h1 className="block max-xl:hidden">Subscriptions</h1>
+          </Link>    
+          <Link
+            className="frame inshadow px-5 flex items-center gap-2 hover:bg-[#5a96c323] hover:text-blue-600 font-medium p-3 w-full rounded-full"
+            href={`/analytices`}
+          >
+            <FaRegUser className="text-xl" />
+            <h1 className="block max-xl:hidden">Analytices</h1>
+          </Link>    
         <Link
           className="inshadow px-5 flex gap-2 items-center mt-6 bg-[#00aff0] hover:bg-blue-500 py-2 rounded-full"
           href="/new-post"
@@ -128,10 +94,10 @@ function SideBar({ user }: SideBarProps) {
           <h1 className="block max-xl:hidden">New Post</h1>
         </Link>
         <button
-          className="inshadow bg-red-600 p-2 rounded-full"
+          className="inshadow bg-red-600  p-2 rounded-full"
           onClick={() => signOut()}
         >
-          Sign Out
+          Logout
         </button>
       </div>
     </div>

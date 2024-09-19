@@ -20,20 +20,18 @@ export const createPostAction = async ({
   try {
     const session = await getServerSession(authOptions);
 
-    if (!session) {
-      // throw new Error("Unauthorized");
-      return JSON.parse(JSON.stringify({ success:false }))
+    if (!session || !session.user?.email) { 
+      return null
     }
 
     const user = await prisma.user.findUnique({
       where: {
-        email: session?.user?.email || "",
+        email: session?.user?.email  ,
       },
     });
 
-    if (!user) {
-      // throw new Error("User not found");
-      return;
+    if (!user) { 
+      return null;
     }
 
     const newPost = await prisma.post.create({
@@ -57,6 +55,7 @@ interface PostStats {
 }
 export const CoverImage = async (userId: string): Promise<PostStats> => {
   try {
+    
     const [imageCountResult, videoCountResult, allPosts] = await Promise.all([
       prisma.post.count({
         where: {
@@ -102,17 +101,18 @@ export const CoverImage = async (userId: string): Promise<PostStats> => {
 export const PaticularPost = async ({ userId }: { userId: string }) => {
   try {
     if (!userId) {
-      // throw new Error("User ID is required");
-      return ;
+      return null;
     }
     const session = await getServerSession(authOptions);
 
+    if (!session || !session.user?.email) {
+      return null;
+    }
+
     const user = await prisma.user.findUnique({
       where: {
-        email: session?.user?.email || "",
+        email: session?.user?.email ,
       },
-      
-
       select: {
         id: true,
       },
@@ -142,14 +142,16 @@ export const PaticularPost = async ({ userId }: { userId: string }) => {
 export const PaticularPostForMedia = async ({ userId }: { userId: string }) => {
   try {
     if (!userId) {
-      // throw new Error("User ID is required");
-      return ;
+      return null;
     }
     const session = await getServerSession(authOptions);
 
+    if (!session || !session.user?.email) {
+      return null;}
+
     const user = await prisma.user.findUnique({
       where: {
-        email: session?.user?.email || "",
+        email: session?.user?.email ,
       },
 
       select: {
@@ -184,6 +186,9 @@ export const PaticularPostForMedia = async ({ userId }: { userId: string }) => {
 
 export const setLike = async ({ postId }: { postId: string }) => {
   try {
+    if (!postId) {
+      return null;
+    }                 
     const post = await prisma.post.findUnique({
       where: {
         id: postId,
@@ -191,8 +196,7 @@ export const setLike = async ({ postId }: { postId: string }) => {
     });
 
     if (!post) {
-      // throw new Error("Post not found");
-      return ;
+      return null;
     }
 
     const like = await prisma.like.findFirst({
@@ -222,19 +226,17 @@ export const postsAll = async () => {
   try {
     const session = await getServerSession(authOptions);
 
-    if (!session) {
-      // throw new Error("Unauthorized");
-      return ;
+    if (!session || !session.user?.email) { 
+      return null;
     }
 
     const user = await prisma.user.findUnique({
       where: {
-        email: session?.user?.email || "",
+        email: session?.user?.email,
       },
     });
 
-    if (!user) {
-      // throw new Error("User not found");
+    if (!user) { 
       return ;
     }
 
@@ -256,9 +258,13 @@ export const deletePost = async ({ id }: { id: string }) => {
   try {
     const session = await getServerSession(authOptions);
 
+    if (!session || !session.user?.email) {
+      return null;
+    }
+
     const user = await prisma.user.findUnique({
       where: {
-        email: session?.user?.email || "",
+        email: session?.user?.email  ,
       },
 
       select: {
@@ -274,7 +280,6 @@ export const deletePost = async ({ id }: { id: string }) => {
     });
 
     if (!post || !user) {
-      // throw new Error("Post not found");
       return ;
     }
 
@@ -291,23 +296,26 @@ export const deletePost = async ({ id }: { id: string }) => {
 export async function likePostAction(postId: string) {
 
   const session = await getServerSession(authOptions);
+
+  if (!session || !session?.user?.email) {
+    return null;
+  }
   const user = await prisma.user.findUnique({
     where: {
-      email: session?.user?.email || "",
+      email: session?.user?.email ,
     },
      
   });
 
   if (!user) {
-    // throw new Error("Unauthorized");
-    return JSON.parse(JSON.stringify({ success:false }))
+    return null
   }
   const post = await prisma.post.findUnique({
     where: { id: postId },
     select: { likes: true, likelist: { where: { userId: user.id } } },
   });
 
-  if (!post) { return JSON.parse(JSON.stringify({ success:false })) }       
+  if (!post) { return null }       
 
   let newLikes: number;
   if (post.likelist.length > 0) {
@@ -335,9 +343,8 @@ export async function commentOnPostAction(postId: string, text: string) {
   try { 
     const session = await getServerSession(authOptions);
 
-    if (!session?.user?.email) {
-      // throw new Error("Unauthorized: No user email found.");
-      return JSON.parse(JSON.stringify({ success:false }))
+    if (!session?.user?.email) { 
+      return null
     } 
     const user = await prisma.user.findUnique({
       where: {
@@ -346,11 +353,10 @@ export async function commentOnPostAction(postId: string, text: string) {
     });
 
     if (!user) {  
-      return JSON.parse(JSON.stringify({ success:false }))
+      return null
     }
 
-    // Check if the post exists
-     
+    // Check if the post exists 
     await prisma.comment.create({
       data: {
         text,
@@ -361,19 +367,16 @@ export async function commentOnPostAction(postId: string, text: string) {
 
     return  JSON.parse(JSON.stringify({ success:true }))
 
-  } catch (error) {
-    // Detailed error logging
-    console.error("Error commenting on the post:");
-    // throw new Error("Failed to comment on the post. Please try again later.");
+  } catch (error) { 
+    console.error("Error commenting on the post:"); 
   }
 }  
 export const postForPublicUser = async () => {
   try {
     const session = await getServerSession(authOptions);
 
-    if (!session?.user?.email) {
-      // throw new Error("Unauthorized: No user email found.");
-      return JSON.parse(JSON.stringify({ success:false }))
+    if (!session?.user?.email) { 
+      return null
     }
 
     const user = await prisma.user.findUnique({
@@ -382,8 +385,7 @@ export const postForPublicUser = async () => {
       },
     });
 
-    if (!user) {
-      // throw new Error("Unauthorized: User not found.");
+    if (!user) { 
       return;
     }
 

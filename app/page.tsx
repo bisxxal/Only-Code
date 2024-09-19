@@ -10,7 +10,8 @@ export default async function Home() {
   const session = await getServerSession(authOptions);
   const alluser = await allUsers();
   const posts = await postForPublicUser();
-  const adminuser = await AdminUsers();
+  // const adminuser = await AdminUsers();
+  const adminuser = await AdminUsers(session?.user?.email!);
 
   return (
     <main className="w-full flex ">

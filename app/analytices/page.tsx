@@ -6,8 +6,9 @@ import { getServerSession } from "next-auth";
 import { authOptions } from "@/lib/auth";
 
 async function page() {
-  const adminuser = await AdminUsers();
   const session = await getServerSession(authOptions);
+  // const adminuser = await AdminUsers();
+  const adminuser = await AdminUsers(session?.user?.email!);
   const youSubscribed = await userWhoSubscribed({ id: adminuser?.id });
   return (
     <main className="w-full flex ">

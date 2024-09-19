@@ -6,8 +6,9 @@ import React from 'react'
 import Subscribe from './Subscribe';
 
 async function page() {
-    const adminuser = await AdminUsers();
-    const session = await getServerSession(authOptions);
+  const session = await getServerSession(authOptions);
+  // const adminuser = await AdminUsers();
+  const adminuser = await AdminUsers(session?.user?.email!);
     const subscribed = await userSubscription({ id: adminuser?.id }); 
     const youSubscribed = await userWhoSubscribed({ id: adminuser?.id }); 
   return (

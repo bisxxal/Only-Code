@@ -18,7 +18,7 @@ async function Visitpage({ params }: { params: { id: string } }) {
   const posts = await PaticularPost({ userId: params?.id });
   const mediaposts = await PaticularPostForMedia({ userId: params?.id });
   const count = await CoverImage(params?.id);
-  const adminuser = await AdminUsers();
+  const adminuser = await AdminUsers(session?.user?.email!);
   
   return (
     <main className=" flex">
@@ -32,7 +32,7 @@ async function Visitpage({ params }: { params: { id: string } }) {
             <TabsTrigger  className=" w-[49%] h-[40px]  hover:bg-[#19a3ff76]  rounded-none hover:rounded-md hover:text-white uppercase "value="Media">  {  mediaposts?.length  === 0 ? 'No media':`media ${mediaposts?.length  }` }</TabsTrigger>
           </TabsList>
           
-          <TabsContent value="Post"> <h1 className=" px-4 text-xl  text-zinc-400 ">Recent</h1> <Posts posts={posts} user={alluser} adminuser={adminuser} /> </TabsContent>
+          <TabsContent value="Post"> <h1 className=" px-4 text-xl  text-zinc-400 ">Recent</h1> <Posts posts={posts} user={alluser} adminuser={adminuser} content='' /> </TabsContent>
           <TabsContent value="Media"><h1 className=" px-4 text-xl  text-zinc-400 ">Recent</h1>  <MediaShown posts={mediaposts} user={alluser} adminuser={adminuser} /> </TabsContent>
         </Tabs>
 
@@ -43,7 +43,7 @@ async function Visitpage({ params }: { params: { id: string } }) {
         (adminuser?.id === alluser?.id) ||( alluser?.subscriptionPrice !== null )  ? null : (
            <div className=" w-[23%] border-[#ffffff39] border-[2px]  py-7 !pt-4 h-fit flex rounded-xl px-4 flex-col mx-auto mt-20">
         <h1 className=" text-zinc-400 font-medium text-xl mb-4">SUBSCRIPTION</h1>
-        <CheackOutPage user={alluser} adminuser={adminuser}  /> 
+        <CheackOutPage content="" user={alluser} adminuser={adminuser}  /> 
       </div>
         )
       }

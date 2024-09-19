@@ -7,7 +7,8 @@ import { authOptions } from "@/lib/auth";
 
 async function Updateepage() {
   const session = await getServerSession(authOptions);
-  const admin = await AdminUsers();
+  // const admin = await AdminUsers();
+  const admin = await AdminUsers(session?.user?.email!);
  
   return (
     <main>

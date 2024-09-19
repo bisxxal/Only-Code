@@ -8,7 +8,6 @@ export const allUsers = async () => {
         const session = await getServerSession(authOptions);
          
         if (!session) {
-            // throw new Error("Unauthorized");
             return ;
         }
         const allUsers = await prisma.user.findMany({
@@ -25,17 +24,12 @@ export const allUsers = async () => {
     }
 }
 
-export const AdminUsers = async () => {
+export const AdminUsers = async (email:string) => {
     try {
-        const session = await getServerSession(authOptions);
-
-        if (!session) {
-            // throw new Error("Unauthorized");
-            return ;
-        }
+        
         const admin = await prisma.user.findUnique({
             where: {
-                email: session.user?.email ?? undefined 
+                email: email  
             },
            include:{
             isSubscription: {
@@ -46,6 +40,8 @@ export const AdminUsers = async () => {
            }
         }); 
         return JSON.parse(JSON.stringify(admin));
+        // return session;
+        // return admin;
     } catch (error) {
         console.log("An error occurred while fetching admin user:", error);
     }
@@ -144,16 +140,13 @@ export const userWhoSubscribed = async ({ id }: { id: string | undefined }) => {
                 buyerId: true, 
             }
         });
-
-        // Get unique buyerIds from the results
+ 
         const uniqueBuyerIds = [...new Set(buyers.map(sub => sub.buyerId))].filter(id => id !== null) as string[];
-
-        // Fetch users corresponding to the buyerIds
-       
+ 
         const buyerUsers = await prisma.user.findMany({
             where: {
                 id: {
-                    in: uniqueBuyerIds // Find users whose ids match the buyerIds
+                    in: uniqueBuyerIds  
                 }
             }
         });

@@ -22,24 +22,24 @@ export type SideBarProps = {
 function SideBar({ user }: SideBarProps) {
   const [adminId, setAdminId] = useState<string | null>(null);
 
-  useEffect(() => {
-    const fetchAdminId = async () => {
-      try {
-        const admin = await AdminUsers();
-        setAdminId(admin?.id || null);
-      } catch (error) {
-        console.error('Error fetching admin ID:', error);
-      }
-    };
+  // useEffect(() => {
+  //   const fetchAdminId = async () => {
+  //     try {
+  //       // const admin = await AdminUsers();
+  //       // setAdminId(admin?.id || null);
+  //     } catch (error) {
+  //       console.error('Error fetching admin ID:', error);
+  //     }
+  //   };
 
-    fetchAdminId();
-  }, []);
+  //   fetchAdminId();
+  // }, []);
 
   return (
     <div className="fixed max-xl:w-[100px] w-[300px] h-screen border-r-[1.5px] border-[#ffffff27]">
       <div className="mt-5 flex flex-col mx-auto w-[65%] gap-4">
 
-        <Link  href={`/visit/${adminId}`}> 
+        <Link  href={`/visit/`}> 
         {user?.image && (
           <Image
           src={user?.image}
@@ -67,7 +67,7 @@ function SideBar({ user }: SideBarProps) {
        
           <Link
             className="frame inshadow px-5 flex items-center gap-2 hover:bg-[#5a96c323] hover:text-blue-600 font-medium p-3 w-full rounded-full"
-            href={`/visit/${adminId}`}
+            href={`/visit/`}
           >
             <FaRegUser className="text-xl" />
             <h1 className="block max-xl:hidden">Admin Profile</h1>

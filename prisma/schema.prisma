@@ -121,7 +121,7 @@ model Like {
 
 model Subscription {
   id                String   @id @default(cuid())
-  userId            String   @unique 
+  userId            String   
   stripeId          String?
   price             Int
   isPaid            Boolean  @default(false)

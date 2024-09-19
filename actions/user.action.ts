@@ -81,8 +81,7 @@ export const updateUserProfile = async ({ backgroundImage ,name , image,descript
         const session = await getServerSession(authOptions);
 
         if (!session || !session.user?.email) {
-            // throw new Error("Unauthorized or session user email not found");
-            return ;
+          return ;
         }
  
         const updatedUser = await prisma.user.update({

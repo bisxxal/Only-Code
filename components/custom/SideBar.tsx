@@ -8,6 +8,7 @@ import Link from 'next/link';
 import { GoHome } from 'react-icons/go';
 import { FaRegUser, FaPlus } from 'react-icons/fa6';
 import { AdminUsers } from '@/actions/user.action';
+import { PostProps } from './Posts';
 
 interface User {
   name?: string | null;
@@ -19,7 +20,7 @@ export type SideBarProps = {
   user: User | null | undefined;
 };
 
-function SideBar({ user }: SideBarProps) {
+function SideBar({ user }: PostProps) {
   const [adminId, setAdminId] = useState<string | null>(null);
 
   // useEffect(() => {
@@ -39,7 +40,7 @@ function SideBar({ user }: SideBarProps) {
     <div className="fixed max-xl:w-[100px] w-[300px] h-screen border-r-[1.5px] border-[#ffffff27]">
       <div className="mt-5 flex flex-col mx-auto w-[65%] gap-4">
 
-        <Link  href={`/visit/`}> 
+        <Link  href={`/visit/${user?.id}`}> 
         {user?.image && (
           <Image
           src={user?.image}
@@ -67,7 +68,7 @@ function SideBar({ user }: SideBarProps) {
        
           <Link
             className="frame inshadow px-5 flex items-center gap-2 hover:bg-[#5a96c323] hover:text-blue-600 font-medium p-3 w-full rounded-full"
-            href={`/visit/`}
+            href={`/visit/${user?.id}`}
           >
             <FaRegUser className="text-xl" />
             <h1 className="block max-xl:hidden">Admin Profile</h1>

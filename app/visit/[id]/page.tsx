@@ -22,7 +22,7 @@ async function Visitpage({ params }: { params: { id: string } }) {
   
   return (
     <main className=" flex">
-      <SideBar user={session?.user} />
+      <SideBar user={adminuser} />
       <div className=" max-xl:pl-[100px] min-h-screen pl-[300px] max-lg:w-full border-r-[1.5px] border-[#ffffff27] w-[75%]">
         <VisitPageFront alluser={alluser} count={count} />
        
@@ -40,7 +40,7 @@ async function Visitpage({ params }: { params: { id: string } }) {
 
 
       {
-        (adminuser?.id === alluser?.id) ||( alluser?.subscriptionPrice !== null )  ? null : (
+        (adminuser?.id === alluser?.id) || ( alluser?.subscriptionPrice === null )  ? null : (
            <div className=" w-[23%] border-[#ffffff39] border-[2px]  py-7 !pt-4 h-fit flex rounded-xl px-4 flex-col mx-auto mt-20">
         <h1 className=" text-zinc-400 font-medium text-xl mb-4">SUBSCRIPTION</h1>
         <CheackOutPage content="" user={alluser} adminuser={adminuser}  /> 

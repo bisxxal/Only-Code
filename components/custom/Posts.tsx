@@ -14,6 +14,7 @@ import { useRouter } from 'next/navigation';
 import { FiSend } from "react-icons/fi";
 import CheackOutPage from './CheackOutPage';
 import 'next-cloudinary/dist/cld-video-player.css';
+import Link from 'next/link';
 export interface PostProps {
 	posts?: any;
 	user?: {
@@ -106,8 +107,10 @@ export function getPreviousDayFormatted(dateString: string): string {
                { user?.image && <Image src={user?.image} width={550} height={525} className=' h-14 w-14 rounded-full'  alt='post'/>}
                 <h1>{user?.name}</h1>  
 
+                    <Link href={`/visit/${post?.user?.id}`}  className=' gap-2 font-semibold flex items-center '>
                 { post?.user?.image && <Image src={post?.user?.image} width={550} height={525} className=' h-14 w-14 rounded-full'  alt='post'/>}
                 <h1>{post?.user?.name}</h1>  
+                    </Link>
                 </div>
  
 

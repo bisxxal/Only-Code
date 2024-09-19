@@ -26,7 +26,9 @@ export const allUsers = async () => {
 
 export const AdminUsers = async (email:string) => {
     try {
-        
+        if(!email){
+            return null;
+        }
         const admin = await prisma.user.findUnique({
             where: {
                 email: email  
@@ -40,8 +42,7 @@ export const AdminUsers = async (email:string) => {
            }
         }); 
         return JSON.parse(JSON.stringify(admin));
-        // return session;
-        // return admin;
+        
     } catch (error) {
         console.log("An error occurred while fetching admin user:", error);
     }

@@ -12,7 +12,7 @@ async function Updateepage() {
  
   return (
     <main>
-      <SideBar  user={session?.user} />
+      <SideBar  user={admin} />
       <div className=" max-xl:pl-[100px] min-h-screen pl-[300px] max-lg:w-full border-r-[1.5px] border-[#ffffff27] w-[75%]">
         
         <h1 className=" p-4 text-xl text-zinc-400 font-semibold">Edit page</h1>

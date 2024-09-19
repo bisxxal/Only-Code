@@ -12,7 +12,7 @@ async function page() {
   const youSubscribed = await userWhoSubscribed({ id: adminuser?.id });
   return (
     <main className="w-full flex ">
-      <SideBar user={session?.user} />
+      <SideBar user={adminuser} />
 
       <div className=" max-xl:pl-[100px] pl-[310px] max-lg:w-full  w-[75%]">
         <AnalyticsTab adminuser={adminuser} youSubscribed={youSubscribed} />

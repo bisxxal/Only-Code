@@ -32,9 +32,7 @@ export const createOrder = async (order:any) => {
           }); 
 
           return session.url;
-
-        // return stripe.accountSessions
-
+ 
     } catch (error) {
         console.log('Error during checkout:', error);
         
@@ -45,8 +43,7 @@ interface CheakOutProps {
     stripeId: string;
     sellerId: string;
     buyerId: string;
-    totalAmount: string;
-    // createdAt: Date;
+    totalAmount: string; 
 }
 export const cheakOutOrder = async (orders:CheakOutProps) => {
 

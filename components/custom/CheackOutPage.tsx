@@ -8,23 +8,21 @@ import { createOrder } from '@/actions/order.actions';
 const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY!);
 
 function CheackOutPage({ user,  adminuser ,content} : PostProps) {
-    useEffect(() => { 
+    // useEffect(() => { 
+    //     const query = new URLSearchParams(window.location.search);
+    //     if (query.get('success')) { 
+    //     }
     
-        const query = new URLSearchParams(window.location.search);
-        if (query.get('success')) { 
-        }
-    
-        if (query.get('canceled')) { 
-        }
-      }, []);
+    //     if (query.get('canceled')) { 
+    //     }
+    //   }, []);
 
     const onCheakOut = async () => {
         const order = { 
           price: user?.subscriptionPrice,
-          userId : user?.id, // sellerId
-          // isPaid:true,
-          buyerId : adminuser?.id, // buyerId
-          // sellerId : user?.id,
+          userId : user?.id,  
+          buyerId : adminuser?.id,  
+       
           name: user?.name
         };
     
@@ -33,8 +31,7 @@ function CheackOutPage({ user,  adminuser ,content} : PostProps) {
 
           if (url) {
             window.location.href = url;
-          }
-        // console.log(order);        
+          }    
         } catch (error) {
         }
       }; 
